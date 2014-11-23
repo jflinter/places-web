@@ -22,7 +22,7 @@ angular
         templateUrl: 'views/main.html',
         controller: 'MainCtrl'
       })
-      .when('/maps/:mapID', {
+      .when('/:mapID', {
         templateUrl: 'views/maps.html',
         controller: 'MapsCtrl'
       })

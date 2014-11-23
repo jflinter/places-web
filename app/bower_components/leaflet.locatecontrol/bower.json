@@ -1,6 +1,6 @@
 {
   "name": "leaflet.locatecontrol",
-  "version": "0.33.0",
+  "version": "0.31.0",
   "homepage": "https://github.com/domoritz/leaflet-locatecontrol",
   "authors": [
     "Dominik Moritz <domoritz@gmail.com>"
@@ -23,14 +23,5 @@
     "plugin"
   ],
   "license": "MIT",
-  "readmeFilename": "README.md",
-  "_release": "0.33.0",
-  "_resolution": {
-    "type": "version",
-    "tag": "v0.33.0",
-    "commit": "afd0bcf6dd21a41eca52abf989afae1419a9d314"
-  },
-  "_source": "git://github.com/domoritz/leaflet-locatecontrol.git",
-  "_target": "~0.33",
-  "_originalSource": "leaflet.locatecontrol"
+  "readmeFilename": "README.md"
 }

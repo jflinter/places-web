@@ -12,21 +12,21 @@ angular.module('placesWebApp')
     var markerCache = {};
     $scope.title = "Loading...";
     $scope.markers = [];
-    // leafletData.getMap().then(function(map) {
-    //   var lc = L.control.locate({
-    //     follow: false,
-    //     setView: false,
-    //     markerStyle: {
-    //       clickable: false,
-    //       pointerEvents: 'none',
-    //       className: 'locate-circle'
-    //     },
-    //     locateOptions: {
-    //       watch: false
-    //     }
-    //   }).addTo(map);
-    //   lc.locate();
-    // });
+    leafletData.getMap().then(function(map) {
+      var lc = L.control.locate({
+        follow: false,
+        setView: false,
+        markerStyle: {
+          clickable: false,
+          pointerEvents: 'none',
+          className: 'locate-circle'
+        },
+        locateOptions: {
+          watch: false
+        }
+      }).addTo(map);
+      lc.locate();
+    });
     $scope.$on('leafletDirectiveMap.popupopen', function(event, args){
       var html = args.leafletEvent.popup._container;
       $(html).addClass("animated-popup");
