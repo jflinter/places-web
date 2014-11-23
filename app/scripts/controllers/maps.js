@@ -12,21 +12,21 @@ angular.module('placesWebApp')
     var markerCache = {};
     $scope.title = "Loading...";
     $scope.markers = [];
-    leafletData.getMap().then(function(map) {
-      var lc = L.control.locate({
-        follow: false,
-        setView: false,
-        markerStyle: {
-          clickable: false,
-          pointerEvents: 'none',
-          className: 'locate-circle'
-        },
-        locateOptions: {
-          watch: false
-        }
-      }).addTo(map);
-      lc.locate();
-    });
+    // leafletData.getMap().then(function(map) {
+    //   var lc = L.control.locate({
+    //     follow: false,
+    //     setView: false,
+    //     markerStyle: {
+    //       clickable: false,
+    //       pointerEvents: 'none',
+    //       className: 'locate-circle'
+    //     },
+    //     locateOptions: {
+    //       watch: false
+    //     }
+    //   }).addTo(map);
+    //   lc.locate();
+    // });
     $scope.$on('leafletDirectiveMap.popupopen', function(event, args){
       var html = args.leafletEvent.popup._container;
       $(html).addClass("animated-popup");
@@ -49,7 +49,7 @@ angular.module('placesWebApp')
         var latlng = popup._latlng;
         // var popupHeight = $(popup._container).height() + 10;
         // var diff = popupHeight - ($(window).height() / 2 - 100);
-        var diff = 170;
+        var diff = 70;
         // if (diff > 0) {
           var targetPoint = map.project(latlng, zoom).subtract([0, diff]);
           latlng = map.unproject(targetPoint, zoom);
@@ -94,16 +94,16 @@ angular.module('placesWebApp')
           message: content,
           icon: {
             iconUrl: isRetinaDisplay() ? "images/pin@2x.png" : "images/pin.png",
-            iconSize: [14, 36],
-            iconAnchor: [7, 36],
+            iconSize: [28, 72],
+            iconAnchor: [14, 54],
             shadowSize: [0, 0],
             shadowUrl: "images/shadow.png"
           },
           popupOptions: {
             closeButton: false,
             autoPan: false,
-            minWidth: 260,
-            maxWidth: 260
+            minWidth: 200,
+            maxWidth: 200,
           }
         };
         markerCache[place.id] = marker;

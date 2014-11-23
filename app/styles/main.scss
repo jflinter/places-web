@@ -50,7 +50,8 @@ leaflet, .leaflet-main {
     perspective: 200;
     perspective-origin: 50% 50%;
     transition: transform 0.1s ease;
-    max-height: 345px;
+    min-height: 240px;
+    max-height: 240px;
     overflow-y: scroll;
   }
   height: 100%;
