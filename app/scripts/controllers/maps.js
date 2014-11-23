@@ -67,66 +67,76 @@ angular.module('placesWebApp')
         map.fire('preclick');
       });
     });
-    var mapRef = new Firebase("https://shareplaces.firebaseio.com/maps/" + $routeParams.mapID);
-    mapRef.once('value', function(snapshot){
-      var places = _.filter(_.map(snapshot.val().places, function(place, placeId) {
-        place.id = placeId;
-        return place;
-      }), function(place) {
-        return !place.PLCDeletedAt;
-      });
-      var markers = _.map(places, function(place) {
-        var firstLine, rest = "";
-        if (place.caption) {
-          var lines = place.caption.split("\n");
-          firstLine = lines[0];
-          rest = lines.splice(1).join("<br>");
-        }
-        var content = "<div class='marker-content' data-placeid='" + place.id + "'>" +
-        "<div class='marker-title'>" +
-        firstLine +
-        "</div>" +
-        rest +
-        "</div>";
-        var marker = {
-          lat: place.latitude,
-          lng: place.longitude,
-          message: content,
-          icon: {
-            iconUrl: isRetinaDisplay() ? "images/pin@2x.png" : "images/pin.png",
-            iconSize: [28, 72],
-            iconAnchor: [14, 54],
-            shadowSize: [0, 0],
-            shadowUrl: "images/shadow.png"
-          },
-          popupOptions: {
-            closeButton: false,
-            autoPan: false,
-            minWidth: 200,
-            maxWidth: 200,
-          }
-        };
-        markerCache[place.id] = marker;
-        return marker;
-      });
-      var markerBounds = {
-        northEast: {
-          lat: _.max(_.map(places, 'latitude')),
-          lng: _.max(_.map(places, 'longitude'))
-        },
-        southWest: {
-          lat: _.min(_.map(places, 'latitude')),
-          lng: _.min(_.map(places, 'longitude'))
-        }
-      };
-      angular.extend($scope, {
-        title: snapshot.val().name,
-        markers: markers,
-        bounds: markerBounds,
-        maxBounds: markerBounds,
-      });
-      $scope.$apply();
+    var shortener = new Firebase("https://shareplaces.firebaseio.com/urls/" + $routeParams.mapID);
+    shortener.once('value', function(shortened) {
+      var mapId = shortened.val();
+      if (mapId) {
+        var mapRef = new Firebase("https://shareplaces.firebaseio.com/maps/" + mapId);
+        mapRef.once('value', function(snapshot){
+          var places = _.filter(_.map(snapshot.val().places, function(place, placeId) {
+            place.id = placeId;
+            return place;
+          }), function(place) {
+            return !place.PLCDeletedAt;
+          });
+          var markers = _.map(places, function(place) {
+            var firstLine, rest = "";
+            if (place.caption) {
+              var lines = place.caption.split("\n");
+              firstLine = lines[0];
+              rest = lines.splice(1).join("<br>");
+            }
+            var content = "<div class='marker-content' data-placeid='" + place.id + "'>" +
+            "<div class='marker-title'>" +
+            firstLine +
+            "</div>" +
+            rest +
+            "</div>";
+            var marker = {
+              lat: place.latitude,
+              lng: place.longitude,
+              message: content,
+              icon: {
+                iconUrl: isRetinaDisplay() ? "images/pin@2x.png" : "images/pin.png",
+                iconSize: [28, 72],
+                iconAnchor: [14, 54],
+                shadowSize: [0, 0],
+                shadowUrl: "images/shadow.png"
+              },
+              popupOptions: {
+                closeButton: false,
+                autoPan: false,
+                minWidth: 200,
+                maxWidth: 200,
+              }
+            };
+            markerCache[place.id] = marker;
+            return marker;
+          });
+          var markerBounds = {
+            northEast: {
+              lat: _.max(_.map(places, 'latitude')),
+              lng: _.max(_.map(places, 'longitude'))
+            },
+            southWest: {
+              lat: _.min(_.map(places, 'latitude')),
+              lng: _.min(_.map(places, 'longitude'))
+            }
+          };
+          angular.extend($scope, {
+            title: snapshot.val().name,
+            markers: markers,
+            bounds: markerBounds,
+            maxBounds: markerBounds,
+          });
+          $scope.$apply();
+        });
+      }
+      else {
+        //redirect to 404
+      }
     });
+    
     var tileFormatSuffix = isRetinaDisplay() ? "@2x.png" : ".png";
     var tileLayer = "https://a.tiles.mapbox.com/v3/jflinter.icfgg4f5/{z}/{x}/{y}" + tileFormatSuffix;
     angular.extend($scope, {
