@@ -1,0 +1,9 @@
+{
+  "firebase": "shareplaces",
+  "public": ".",
+  "ignore": [
+    "firebase.json",
+    ".*",
+    "**/node_modules/**"
+  ]
+}
